@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.runtime/
+.env
+.env.*
+!.env.example
+qa/history/
+qa/english-quota/
+qa/public-release/
+*.log
+.DS_Store

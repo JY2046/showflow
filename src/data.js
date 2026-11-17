@@ -1,0 +1,96 @@
+export const longTimes = [15, 20, 75, 30, 25, 15];
+export const shortTimes = [10, 10, 40, 15, 10, 5];
+export const scenes = [
+  {
+    id: "opening",
+    name: "开场",
+    title: "让每场讨论，都有下一步",
+    goal: "用一句话讲清楚产品帮助谁、解决什么问题。",
+    action: "展示产品标题",
+    script: "会议行动卡，让会议讨论变成可执行的行动。",
+    source: "开场演示页",
+    image: "/assets/opening.png",
+    fallback: "/assets/scene-0.png",
+    thumb: "/assets/scene-0.png",
+  },
+  {
+    id: "problem",
+    name: "问题",
+    title: "会开完了，行动却没有开始",
+    goal: "让听众理解会议结束后，任务、负责人和跟进环节容易脱节。",
+    action: "指出三个常见困扰",
+    script: "结论散落在会议记录里，谁来做、何时完成，往往还需要再次确认。",
+    source: "问题说明页",
+    image: "/assets/problem.png",
+    fallback: "/assets/scene-1.png",
+    thumb: "/assets/scene-1.png",
+  },
+  {
+    id: "demo",
+    name: "核心操作",
+    title: "把讨论变成行动清单",
+    goal: "展示如何将会议讨论转化为可执行的任务、负责人和截止时间。",
+    action: "打开行动清单",
+    script: "导入一段会议记录，展示任务、负责人和截止时间。",
+    source: "产品截图 02",
+    image: "/assets/meeting-actions.png",
+    fallback: "/assets/meeting-reference.png",
+    thumb: "/assets/scene-2.png",
+  },
+  {
+    id: "evidence",
+    name: "依据",
+    title: "让每个行动，都有出处",
+    goal: "展示行动与原始会议记录的对应关系，区分可见功能与待验证效果。",
+    action: "对照原始记录与行动卡",
+    script:
+      "每项行动都可以回到原始会议记录。效果数字还需要通过真实测试来验证。",
+    source: "功能说明页",
+    image: "/assets/evidence.png",
+    fallback: "/assets/scene-3.png",
+    thumb: "/assets/scene-3.png",
+  },
+  {
+    id: "closing",
+    name: "结尾",
+    title: "让讨论更快落地",
+    goal: "用一个明确的下一步结束演示，不引入新的功能。",
+    action: "邀请试用与反馈",
+    script:
+      "下一步，我们会邀请真实使用者完成测试，看看行动卡是否让会后跟进更清楚。",
+    source: "结束演示页",
+    image: "/assets/closing.png",
+    fallback: "/assets/scene-4.png",
+    thumb: "/assets/scene-4.png",
+  },
+  {
+    id: "buffer",
+    name: "机动",
+    title: "给现场留一点余地",
+    goal: "预留点击、切换、停顿和演示恢复的时间。",
+    action: "根据现场节奏调整",
+    script: "这里预留给现场停顿与切换，也可以回到刚才的行动清单回答问题。",
+    source: "备用演示页",
+    image: "/assets/buffer.png",
+    fallback: "/assets/scene-5.png",
+    thumb: "/assets/scene-5.png",
+  },
+];
+export const questions = [
+  {
+    title: "“每周节省10小时”是如何测出来的？",
+    note: "这条收益主张尚未关联测试记录。",
+    outline:
+      "先说明是否已完成测试，再交代测试对象、比较方法与样本；未验证时明确说明下一步计划。",
+  },
+  {
+    title: "行动清单出现遗漏时，使用者如何纠正？",
+    note: "关注演示中尚未展示的编辑与纠错环节。",
+    outline: "说明当前能实际操作的纠正方式，并区分已经实现与未来计划。",
+  },
+  {
+    title: "和直接整理会议记录相比，具体价值在哪里？",
+    note: "关注完整操作，而不是重复功能名称。",
+    outline: "用一个用户场景说明原先的操作与现在的步骤，再给出可以展示的结果。",
+  },
+];

@@ -1,0 +1,13 @@
+{
+  "firebase": {
+    "apiKey": "your-firebase-web-api-key",
+    "projectId": "your-project-id",
+    "appId": "your-web-app-id",
+    "authDomain": "your-project-id.firebaseapp.com"
+  },
+  "cloudModel": "gemini-3.5-flash-lite",
+  "appCheck": {
+    "provider": "debug",
+    "debugToken": "your-own-registered-debug-UUID"
+  }
+}

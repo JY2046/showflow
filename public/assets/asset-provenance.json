@@ -1,0 +1,28 @@
+{
+  "meeting-actions.png": "Exact embedded screenshot crop from the selected reference; not a live application screenshot.",
+  "thumbnails": "Exact storyboard raster crops from selected reference.",
+  "supporting_slides": [
+    {
+      "name": "opening.png",
+      "source": "OpenAI image generation, created for ShowFlow during November 2026; synthetic artwork."
+    },
+    {
+      "name": "problem.png",
+      "source": "OpenAI image generation, created for ShowFlow during November 2026; synthetic artwork."
+    },
+    {
+      "name": "evidence.png",
+      "source": "OpenAI image generation, created for ShowFlow during November 2026; synthetic artwork."
+    },
+    {
+      "name": "closing.png",
+      "source": "OpenAI image generation, created for ShowFlow during November 2026; synthetic artwork."
+    },
+    {
+      "name": "buffer.png",
+      "source": "OpenAI image generation, created for ShowFlow during November 2026; synthetic artwork."
+    }
+  ],
+  "synthetic": true,
+  "image_generation": "built-in image_gen"
+}
