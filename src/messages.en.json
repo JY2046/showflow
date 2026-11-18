@@ -622,5 +622,8 @@
   "目录元信息 · 未读取全文": "Catalog metadata · Full file not read",
   "网络来源 · 待核对": "Web source · Check independently",
   "正在核对目录…": "Checking the catalog…",
-  "正在读取公开目录，逐项核对关键词与材料元信息…": "Reading the public catalog and checking each term against material metadata…"
+  "正在读取公开目录，逐项核对关键词与材料元信息…": "Reading the public catalog and checking each term against material metadata…",
+  "筛选已收集参考": "Filter collected references",
+  "在已收集材料中筛选公司、关键词或笔记": "Filter collected materials by company, keyword or note",
+  "这里只筛选浏览器中保留的 {0} 条材料（含内置示例）。新增来源请使用上方目录搜索、网上搜索或收藏新链接。": "This only filters the {0} materials stored in this browser, including built-in examples. Add sources using the catalog, web search or Save a new link above."
 }

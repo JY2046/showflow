@@ -167,15 +167,13 @@ export function ReferenceLibrary({
       <div className="research-bar">
         <label className="search-field">
           <MagnifyingGlass size={21} />
-          <input aria-label={t("搜索参考库")} placeholder={t("搜索公司、行业、关键词，如 SaaS、协作")} value={query} onChange={e => setQuery(e.target.value)} />
+          <input aria-label={t("筛选已收集参考")} placeholder={t("在已收集材料中筛选公司、关键词或笔记")} value={query} onChange={e => setQuery(e.target.value)} />
           {query && <button aria-label={t("清空搜索")} onClick={() => setQuery("")}>
               <X size={17} />
             </button>}
         </label>
-        <a className="secondary" href={`https://www.google.com/search?q=${encodeURIComponent(`${query.trim() || "collaboration SaaS"} pitch deck`)}`} target="_blank" rel="noreferrer">{t("到网上继续搜 ")}<ArrowUpRight size={18} />
-        </a>
       </div>
-      <p className="scope-note">{t("当前搜索本页已收集的 ")}{references.length}{" "}{t("条来源；网上搜索会在新页打开，找到后可粘贴链接收藏。公开原稿 3 份，方法模板 2 份 · 核验于 2026.11.15 ")}</p>
+      <p className="scope-note">{t("这里只筛选浏览器中保留的 {0} 条材料（含内置示例）。新增来源请使用上方目录搜索、网上搜索或收藏新链接。", [references.length])}</p>
       {adding && <form className="reference-add" onSubmit={add}>
           <h3>{t("收藏参考来源")}</h3>
           <label>{t("材料名称 ")}<input required maxLength={80} value={draft.title} onChange={e => setDraft({

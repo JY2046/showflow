@@ -72,6 +72,9 @@ export function SearchPanel({
   compact = false
 }) {
   const [query, setQuery] = useState(lastSearch?.query || "Front");
+  useEffect(() => {
+    if (lastSearch?.query) setQuery(lastSearch.query);
+  }, [lastSearch?.query]);
   return <section className={"auto-search-panel " + (compact ? "compact" : "")}>
       <div className="workflow-section-heading">
         <span className="step-badge">02</span>
