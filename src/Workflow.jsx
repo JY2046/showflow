@@ -98,7 +98,7 @@ export function SearchPanel({
       {searchError && <p className="workflow-error" role="alert">
           {uiMessage(searchError)}
         </p>}
-      {lastSearch && !searching && <div className="search-receipt"><p className="scope-note">{t("上次成功查询：")}{lastSearch.query} · {t("全部关键词命中 {0} 条", [lastSearch.count])} · {t("部分匹配 {0} 条", [lastSearch.relatedCount || 0])} · {formatDate(lastSearch.at)}</p>
+      {lastSearch && !searching && <div className="search-receipt"><p className="scope-note">{lastSearch.resultIds ? <>{t("上次成功查询：")}{lastSearch.query} · {t("全部关键词命中 {0} 条", [lastSearch.count])} · {t("部分匹配 {0} 条", [lastSearch.relatedCount || 0])}</> : t("旧版查询记录：{0} · {1} 条来源（未按新规则核对）", [lastSearch.query, lastSearch.count])} · {formatDate(lastSearch.at)}</p>
         {lastSearch.queryTerms?.length > 0 && <p className="scope-note">{t("本次匹配条件：")}{lastSearch.queryTerms.join(" · ")}</p>}
       </div>}
       <div className="external-reference-search"><p>{t("精确行业搜索：保留你的完整关键词，在新页查找PDF或PPT，再收藏合适的来源。")}</p><a className="text-link" href={externalSearchUrl(query, "pdf")} target="_blank" rel="noreferrer">{t("到网上找PDF")} <ArrowUpRight size={14} /></a><a className="text-link" href={externalSearchUrl(query, "ppt")} target="_blank" rel="noreferrer">{t("到网上找PPT/PPTX")} <ArrowUpRight size={14} /></a><small>{t("外部搜索不会自动回填；只传搜索框文字，原稿留在本机。")}</small></div>
