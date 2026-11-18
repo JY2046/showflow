@@ -11,6 +11,7 @@ import { timesFor } from "./timing";
 import { importPptx } from "./pptx-import";
 import { ReviewGuide } from "./ReviewGuide";
 import { releaseLinks } from "./release";
+import { mergeReferenceBatch } from "./reference-batches";
 function readLocal(key, fallback) {
   try {
     const x = JSON.parse(localStorage.getItem(key));
@@ -382,37 +383,8 @@ export function App() {
       const r = await callApi("search", {
         query
       });
-      setReferences(previous => {
-        let existing = previous.map(r => ({
-          ...r,
-          forRewrite: false
-        })).filter(r => !(r.discovered && !isDeckCandidate(r.url)));
-        const collected = r.results.map((x, i) => {
-          const old = existing.find(y => y.url.replace(/\/$/, "") === x.url.replace(/\/$/, ""));
-          if (old) {
-            existing = existing.filter(y => y.id !== old.id);
-            return {
-              ...x,
-              ...old,
-              discovered: true,
-              retrievedAt: r.meta.generatedAt,
-              forRewrite: i < 3
-            };
-          }
-          return {
-            ...x,
-            forRewrite: i < 3
-          };
-        });
-        return [...collected, ...existing];
-      });
-      setLastSearch({
-        query,
-        count: r.results.length,
-        at: r.meta.generatedAt,
-        model: r.meta.model,
-        responseId: r.meta.responseId
-      });
+      setReferences(previous => mergeReferenceBatch(previous, r, query).references);
+      setLastSearch(mergeReferenceBatch([], r, query).lastSearch);
       notify(r.results.length ? t("已自动搜集 {0} 条可追溯参考，可选择用于改版", [r.results.length]) : t("没有找到匹配的可追溯来源，请调整描述。"));
     } catch (e) {
       setSearchError(e.message);

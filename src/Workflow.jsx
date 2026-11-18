@@ -7,6 +7,8 @@ import { reviseWithFirebase } from "./firebase-ai";
 import { importPptx } from "./pptx-import";
 import { themes, downloadJson } from "./deck";
 import { isHostedPreview } from "./release";
+import { groupReferences, externalSearchUrl } from "./reference-batches";
+import { ReferenceGroup, MatchDetails } from "./ReferenceGroup";
 export function OriginalSlide({
   scene
 }) {
@@ -69,33 +71,34 @@ export function SearchPanel({
   lastSearch,
   compact = false
 }) {
-  const [query, setQuery] = useState("team collaboration SaaS pitch deck");
+  const [query, setQuery] = useState(lastSearch?.query || "Front");
   return <section className={"auto-search-panel " + (compact ? "compact" : "")}>
       <div className="workflow-section-heading">
         <span className="step-badge">02</span>
         <div>
-          <h3>{t("自动搜集同类路演")}</h3>
-          <p>{t("实时读取公开路演索引，按行业关键词和公司名匹配。原稿留在本机。")}</p>
+          <h3>{t("按关键词搜集参考材料")}</h3>
+          <p>{t("当前免费目录只提供公司名、材料标题、年份和轮次；不含行业描述或PPT/PDF正文。")}</p>
         </div>
       </div>
       <form onSubmit={e => {
       e.preventDefault();
       onSearch(query);
     }}>
-        <label>{t("公开行业或产品描述 ")}<input aria-label={t("自动搜集搜索词")} maxLength={200} minLength={2} required value={query} onChange={e => setQuery(e.target.value)} placeholder={t("如：制造业 AI 质检、企业协作 SaaS")} />
+        <label>{t("公司名或公开业务关键词")}<input aria-label={t("自动搜集搜索词")} maxLength={200} minLength={2} required value={query} onChange={e => setQuery(e.target.value)} placeholder={t("如 Front、2016、Series A；行业检索可用下方网上搜索")} />
         </label>
         <button className="primary" disabled={searching}>
           <MagnifyingGlass size={18} />
-          {searching ? t("正在联网查找…") : t("自动搜集参考")}
+          {searching ? t("正在核对目录…") : t("搜索公开目录")}
         </button>
       </form>
-      {searching && <p className="workflow-status" role="status">{t("正在读取公开路演索引，收集相近公司材料的来源链接… ")}</p>}
+      {searching && <p className="workflow-status" role="status">{t("正在读取公开目录，逐项核对关键词与材料元信息…")}</p>}
       {searchError && <p className="workflow-error" role="alert">
           {uiMessage(searchError)}
         </p>}
-      {lastSearch && !searching && <p className="scope-note">{t("上次搜集「")}{lastSearch.query}” · {lastSearch.count}{t(" 条可追溯来源 ·")}{" "}
-          {formatDate(lastSearch.at)} · {t(lastSearch.model)}
-        </p>}
+      {lastSearch && !searching && <div className="search-receipt"><p className="scope-note">{t("上次成功查询：")}{lastSearch.query} · {t("全部关键词命中 {0} 条", [lastSearch.count])} · {t("部分匹配 {0} 条", [lastSearch.relatedCount || 0])} · {formatDate(lastSearch.at)}</p>
+        {lastSearch.queryTerms?.length > 0 && <p className="scope-note">{t("本次匹配条件：")}{lastSearch.queryTerms.join(" · ")}</p>}
+      </div>}
+      <div className="external-reference-search"><p>{t("精确行业搜索：保留你的完整关键词，在新页查找PDF或PPT，再收藏合适的来源。")}</p><a className="text-link" href={externalSearchUrl(query, "pdf")} target="_blank" rel="noreferrer">{t("到网上找PDF")} <ArrowUpRight size={14} /></a><a className="text-link" href={externalSearchUrl(query, "ppt")} target="_blank" rel="noreferrer">{t("到网上找PPT/PPTX")} <ArrowUpRight size={14} /></a><small>{t("外部搜索不会自动回填；只传搜索框文字，原稿留在本机。")}</small></div>
     </section>;
 }
 export function Workflow({
@@ -150,7 +153,8 @@ export function Workflow({
   useEffect(() => setSelected(scenes.slice(0, maxPages).map(s => s.id)), [scenes.map(s => s.id).join("|"), maxPages]);
   useEffect(() => setChosen(plan?.appliedIds || plan?.pages?.map(p => p.id) || []), [plan?.meta?.responseId]);
   const selectedRefs = references.filter(r => r.forRewrite).slice(0, 6),
-    availableRefs = references.filter(r => r.saved || r.discovered).slice(0, 10);
+    availableRefs = references.filter(r => r.saved || r.discovered),
+    referenceGroups = groupReferences(availableRefs, lastSearch);
   useEffect(() => setConsent(false), [JSON.stringify(selectedRefs)]);
   async function read(file) {
     if (!file) return;
@@ -295,15 +299,15 @@ export function Workflow({
             </div>
           </section>
           <SearchPanel onSearch={onSearch} searching={searching} searchError={uiMessage(searchError)} lastSearch={lastSearch} />
-          {availableRefs.length > 0 && <section className="rewrite-references">
+          <section className="rewrite-references">
               <div className="detail-heading">
-                <h3>{t("选择改版参考 ")}<small>{selectedRefs.length}/6</small>
+                <h3>{t("选择改版参考 ")}<small>{t("已选{0}条 / 最多6条", [selectedRefs.length])}</small>
                 </h3>
                 <button className="text-link" onClick={() => onNavigate("references")}>{t("打开参考库 ")}<ArrowRight size={15} />
                 </button>
               </div>
               <p className="scope-note">{t("AI 使用来源摘要与自己的借鉴笔记。仅有目录信息的案例，先补充借鉴点，再用于改版归因。 ")}</p>
-              {availableRefs.map(r => <label key={r.id} className="reference-checkbox">
+              {referenceGroups.map(group => <ReferenceGroup key={group.id} group={group} lastSearch={lastSearch}>{group.items.map(r => <div key={r.id} className="reference-candidate"><label className="reference-checkbox">
                   <input type="checkbox" checked={!!r.forRewrite} disabled={!r.forRewrite && selectedRefs.length >= 6} onChange={e => setReferences(p => p.map(x => x.id === r.id ? {
               ...x,
               forRewrite: e.target.checked
@@ -316,10 +320,10 @@ export function Workflow({
                       {r.myNote?.trim() ? t(" · 已写借鉴笔记") : r.catalogSource ? t(" · 可补充借鉴笔记") : ""}
                     </small>
                   </span>
-                  <a href={r.url} target="_blank" rel="noreferrer">{t("来源 ")}<ArrowUpRight size={12} />
-                  </a>
-                </label>)}
-            </section>}
+                </label><a className="candidate-source" href={r.url} target="_blank" rel="noreferrer">{t("来源 ")}<ArrowUpRight size={12} /></a><MatchDetails reference={r} />
+                {group.id === "history" && r.query && <p className="reference-history-query">{t("历史查询：")}{r.query}</p>}
+                </div>)}</ReferenceGroup>)}
+            </section>
         </div>
         <section className="ai-panel">
           <div className="workflow-section-heading">

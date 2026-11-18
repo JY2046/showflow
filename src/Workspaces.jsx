@@ -5,6 +5,8 @@ import { MagnifyingGlass, ArrowUpRight, BookmarkSimple, Plus, Check, Palette, Ar
 import { themes, effectiveStyle, slideLayout, downloadJson, exportDeck } from "./deck";
 import { validPublicUrl } from "./references";
 import { SearchPanel, OriginalSlide } from "./Workflow";
+import { groupReferences } from "./reference-batches";
+import { ReferenceGroup, MatchDetails } from "./ReferenceGroup";
 export function DeckCanvas({
   scene,
   deck,
@@ -156,7 +158,7 @@ export function ReferenceLibrary({
         <div>
           <div className="eyebrow">REFERENCE LIBRARY</div>
           <h2>{t("先看同类，找到自己的讲法。")}</h2>
-          <p>{t("按行业和融资阶段筛选公开材料，把值得借鉴的思路留给自己的路演。")}</p>
+          <p>{t("本次搜索、部分匹配和历史收藏分开保留；打开来源，核对相关性，再记录借鉴点。")}</p>
         </div>
         <button className="secondary" onClick={() => setAdding(!adding)}>
           <Plus size={18} />{t("收藏新链接 ")}</button>
@@ -247,7 +249,7 @@ export function ReferenceLibrary({
           }}>{t("清除全部筛选 ")}</button>
             </div>}
           <div className="reference-list">
-            {results.map(r => <article key={r.id} className={"reference-entry " + (detail === r.id ? "current" : "")}>
+            {groupReferences(results, lastSearch).map(group => <ReferenceGroup key={group.id} group={group} lastSearch={lastSearch} filtered>{group.items.map(r => <article key={r.id} className={"reference-entry " + (detail === r.id ? "current" : "")}>
                 <div className="reference-number">
                   {r.name.slice(0, 2).toUpperCase()}
                 </div>
@@ -262,13 +264,15 @@ export function ReferenceLibrary({
                     <span>{referenceText(r, "title")}</span>
                   </button>
                   <p>{referenceText(r, "note") || t("还没有记录借鉴点。")}</p>
+                  <MatchDetails reference={r} />
+                  {group.id === "history" && r.query && <p className="reference-history-query">{t("历史查询：")}{r.query}</p>}
                   <div className="reference-bottom">
                     <a href={r.url} target="_blank" rel="noreferrer">
                       {referenceText(r, "publisher")}
                       <ArrowUpRight size={14} />
                     </a>
                     <span>
-                      {r.discovered ? t("网络搜索返回 · 可追溯来源") : r.verified ? t("已核验来源链接") : t("自收集 · 待核验")}
+                      {r.catalogSource ? t("目录元信息 · 未读取全文") : r.discovered ? t("网络来源 · 待核对") : r.verified ? t("已核验来源链接") : t("自收集 · 待核验")}
                     </span>
                     <button className="text-link" onClick={() => setDetail(detail === r.id ? null : r.id)}>{t("查看借鉴点 ")}<ArrowRight size={16} />
                     </button>
@@ -279,7 +283,7 @@ export function ReferenceLibrary({
             })}>
                   <BookmarkSimple size={23} weight={r.saved ? "fill" : "regular"} />
                 </button>
-              </article>)}
+              </article>)}</ReferenceGroup>)}
           </div>
         </div>
         {selected && <aside className="reference-detail">

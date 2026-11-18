@@ -217,12 +217,12 @@ test("Live-catalog parser handles commas/quotes and industry ranking returns sou
   );
   assert.equal(rows[0].display_name, "Front, Series A");
   assert.deepEqual(
-    rankCatalog(rows, "协作 SaaS").map((x) => x.r.company_name),
-    ["Front", "Intercom"],
+    rankCatalog(rows, "Front").map((x) => x.r.company_name),
+    ["Front"],
   );
   assert.deepEqual(
     rankCatalog(rows, "电商").map((x) => x.r.company_name),
-    ["Shopify"],
+    [],
   );
   assert.equal(rankCatalog(rows, "完全未知领域 xyz").length, 0);
 });

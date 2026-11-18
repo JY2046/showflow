@@ -36,7 +36,7 @@ test('Translated catalog entries remain metadata-only until the user adds borrow
 });
 test('All statically marked Chinese UI messages have English translations',()=>{
   const messages=JSON.parse(fs.readFileSync(new URL('../src/messages.en.json',import.meta.url),'utf8'));
-  for(const file of ['App.jsx','Workflow.jsx','Workspaces.jsx','FirebasePanel.jsx','deck.js']){
+  for(const file of ['App.jsx','Workflow.jsx','Workspaces.jsx','FirebasePanel.jsx','ReferenceGroup.jsx','deck.js']){
     const source=fs.readFileSync(new URL('../src/'+file,import.meta.url),'utf8');
     for(const match of source.matchAll(/\bt\(("(?:[^"\\]|\\.)*")/g)){
       const key=JSON.parse(match[1]).trim();

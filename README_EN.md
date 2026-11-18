@@ -12,7 +12,7 @@ ShowFlow helps founders import their own PowerPoint, find comparable public deck
 
 No account or payment is needed for the non-AI workflow. Use desktop Chrome, open **Reviewer guide**, then **Try English sample**. The two-slide synthetic deck contains no customer information. Existing projects are kept as browser-local versions when the sample is loaded.
 
-1. Collect references with `team collaboration SaaS pitch deck`. The app fetches a live public catalog and matches metadata locally. It does not read or redistribute entire third-party decks.
+1. Search the live public catalog with `Front` or `Front 2016`. It matches actual company/title/year/round metadata and separates current, partial and historical results. Industry descriptions and complete deck text are absent from this catalog; broad AI keywords are never mapped to a fixed company shortlist. For specific industry research, use the labeled external PDF/PPT search links with the complete query, then save useful sources manually. The app does not read or redistribute entire third-party decks.
 2. In **Styles**, select a global theme, change one slide, and export an editable `.pptx`.
 3. In **Director**, inspect the sequence and notes. Start rehearsal, pause, mark a slide, advance, then finish and review timings.
 4. Download cue cards or retrieve the original imported file. Projects persist in this browser; rehearsal sessions are currently session-only.
@@ -63,7 +63,11 @@ flowchart LR
   Style --> Rehearse[Timed rehearsal and review]
 ```
 
-Original PPTX bytes and images are never sent to the model by this implementation. Speaker notes are excluded by default. Public catalog searches fetch the catalog, not slide content. Any model can produce weak wording or inaccurate claims: numeric/status checks do not replace human review. On-device setup and App Check can still require network access; full offline loading is untested.
+Original PPTX bytes and images are never sent to the model by this implementation. Speaker notes are excluded by default. Public catalog searches fetch the catalog, not slide content. No result is selected for AI automatically; partial matches and history are collapsed separately. External search links transmit the search text only, and do not automatically import results. Any model can produce weak wording or inaccurate claims: numeric/status checks do not replace human review. On-device setup and App Check can still require network access; full offline loading is untested.
+
+## Reference relevance update — November 18, 2026
+
+The free catalog exposes only company names, titles, years and funding rounds. It cannot substantiate detailed FDE, AI-agent-building or foreign-trade relevance. Exact all-term results and partial matches include matched fields and missing terms. Zero results remain zero. Previously stored links and personal notes are retained under History. This is strict catalog lookup plus a manual external-search handoff, not automatic full-web semantic search.
 
 ## Evidence and limits
 
